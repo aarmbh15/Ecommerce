@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import Testimonials from './components/Testimonials'
 import Home from './pages/Home'
 import About from './pages/About'
+import Roadmap from './pages/Roadmap'
 import HallOfHonour from './pages/HallOfHonour'
 import Publications from './pages/Publications'
 import Join from './pages/Join'
@@ -18,6 +19,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/hall-of-honour" element={<HallOfHonour />} />
+        <Route path="/Roadmap" element={<Roadmap />} />
         <Route path="/publications" element={<Publications />} />
         <Route path="/join" element={<Join />} />
         <Route path="/contact" element={<Contact />} />

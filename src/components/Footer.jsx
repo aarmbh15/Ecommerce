@@ -1,24 +1,35 @@
 import { Link } from 'react-router-dom';
+import Logo from '../assets/Logo.jpeg';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 border-t border-gray-800  py-12">
+    <footer className="bg-black border-t border-gray-800 py-12">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-8 text-center md:text-left">
-          {/* Brand */}
+          
+          {/* === Brand Section with Logo === */}
           <div>
             <Link
               to="/"
-              className="inline-block text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white mb-3"
+              className="inline-flex items-center justify-center md:justify-start gap-3 mb-3"
             >
-              PhDians
+              <img
+                src={Logo}
+                alt="PhDians Logo"
+                className="h-20 w-20 object-contain shadow-md hover:scale-105 transition-transform duration-300"
+              />
+              {/* <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">
+                PhDians
+              </span> */}
             </Link>
-            <p className="text-sm text-gray-400">
-              Celebrating research, connecting minds, advancing science.
-            </p>
+         <p className="text-sm text-gray-400">
+  Celebrating research, connecting minds,
+  <br />
+  advancing science.
+</p>
           </div>
 
-          {/* Quick Links */}
+          {/* === Quick Links === */}
           <div>
             <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-4">
               Quick Links
@@ -42,7 +53,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact & Social */}
+          {/* === Contact & Social === */}
           <div>
             <h4 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-4">
               Get in Touch
@@ -76,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* === Bottom Bar === */}
         <div className="mt-10 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
           <p>&copy; {new Date().getFullYear()} PhDians. All rights reserved.</p>
           <p className="mt-1">Empowering researchers worldwide.</p>
