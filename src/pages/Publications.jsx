@@ -1,6 +1,6 @@
 import React from 'react';
 
-// --- Mock Data: Journal/Article Entries (Unchanged) ---
+// --- Mock Data: Journal/Article Entries (43 total) ---
 const mockJournals = [
   { id: 1, title: "Syed et al., 2019a-1 (Nanoparticles)", pdfUrl: "/src/assets/ResearchArticleScrolling/1.pdf", year: 2019, img: "/src/assets/ResearchArticleScrolling/abstract_science.png" },
   { id: 2, title: "Syed et al., 2017b Nanostructure-1", pdfUrl: "/src/assets/ResearchArticleScrolling/2.pdf", year: 2017, img: "/src/assets/ResearchArticleScrolling/abstract_science.png" },
@@ -47,7 +47,7 @@ const mockJournals = [
   { id: 43, title: "Syed et al., 2024 (Latest Research)", pdfUrl: "/src/assets/ResearchArticleScrolling/43.pdf", year: 2024, img: "/src/assets/ResearchArticleScrolling/abstract_science.png" },
 ]; 
 
-// --- Mock Data: Book Entries (Unchanged) ---
+// --- Mock Data: Book Entries (10 total) ---
 const mockBooks = [
   { id: 1, title: "Basics of Microbiology Students learning Guide", year: 2021, publisher: "Academic Press", img: "/src/assets/Scrolling Books Cover/1.png" },
   { id: 2, title: "Bioelectricity Microbial fuel cell", year: 2022, publisher: "Wiley", img: "/src/assets/Scrolling Books Cover/2.png" },
@@ -72,129 +72,172 @@ const FileTextIcon = (props) => (
   </svg>
 );
 
-const App = () => {
+// --- Component that renders a scrollable list of publications ---
+const PublicationList = ({ title, items, isBook, duration = '120s' }) => {
+  // Duplicate the items for the seamless auto-scroll effect
+  const doubledItems = [...items, ...items];
 
-  // Component that renders a scrollable list of publications
-  const PublicationList = ({ title, items, isBook }) => (
+  return (
     <div className="animate-slide-up-fade" style={{ animationDelay: isBook ? '1.5s' : '0.8s' }}>
       <h2 className="text-3xl font-bold text-white mb-8 border-b-2 border-cyan-500/30 pb-2">{title} ({items.length} items)</h2>
 
-      {/* Responsive, horizontally scrolling flex container */}
-      {/* Scrollbar utilities are handled in the <style> block below */}
-      <div className="flex overflow-x-auto gap-6 pb-4 -mx-6 px-6 sm:px-0 sm:mx-0 snap-x snap-mandatory publication-scroll-container">
-        {items.map((item) => (
-          // CARD CONTAINER: Fixed Height h-[28rem] for uniformity
-          <div
-            key={item.id}
-            className="flex-shrink-0 w-64 md:w-72 lg:w-72 snap-start bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 border border-gray-700 hover:border-cyan-500/50 transition-all duration-300 group h-[28rem] flex flex-col hover:shadow-cyan-500/20 transform hover:-translate-y-1"
-          >
+      {/* Wrapper to clip the overflow and apply padding/margins */}
+      <div className="overflow-x-hidden publication-scroll-container-wrapper group">
+        {/* Inner container that holds the duplicated content and gets the animation */}
+        <div 
+          className="flex gap-6 publication-scroll-content"
+          style={{ animationDuration: duration }} // Set scroll speed dynamically
+        >
+          {doubledItems.map((item, index) => (
+            // CARD CONTAINER: Fixed Height h-[28rem] for uniformity
+            <div
+              key={`${item.id}-${index}`} // Use a combined key for duplicates
+              className="flex-shrink-0 w-64 md:w-72 lg:w-72 bg-gray-800/60 backdrop-blur-sm rounded-xl p-5 border border-gray-700 hover:border-cyan-500 transition-all duration-300 hover:shadow-cyan-500/20 shadow-xl h-[28rem] flex flex-col hover:scale-[1.03] transform"
+            >
+              {/* Image/Cover Area */}
+              <div className={`
+                ${isBook ? 'h-60 w-36 md:w-40 mx-auto' : 'h-48 w-full'}
+                bg-gray-700 rounded-lg mb-4 flex items-center justify-center overflow-hidden shadow-2xl 
+                ${!isBook ? 'border border-cyan-500/50' : 'shadow-inner shadow-gray-900'} 
+              `}>
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110" // Enhanced zoom
+                  // Fallback for image loading error
+                  onError={(e) => {
+                    e.target.onerror = null; 
+                    e.target.style.display = 'none';
+                    e.target.parentElement.innerHTML = '<div class="text-gray-500 text-xs p-4 text-center">Image not available</div>';
+                  }}
+                />
+              </div>
 
-            {/* Image/Cover Area */}
-            <div className={`
-              ${isBook ? 'h-60 w-36 md:w-40 mx-auto' : 'h-48 w-full'}
-              bg-gray-700 rounded-lg mb-4 flex items-center justify-center overflow-hidden shadow-xl
-              ${!isBook ? 'border border-cyan-500/50' : ''} 
-            `}>
-              <img
-                src={item.img}
-                alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" // Enhanced zoom
-                // Fallback for image loading error
-                onError={(e) => {
-                  e.target.onerror = null; 
-                  e.target.style.display = 'none';
-                  e.target.parentElement.innerHTML = '<div class="text-gray-500 text-xs p-4 text-center">Image not available</div>';
-                }}
-              />
+              {/* Publication Details */}
+              <p className="font-medium text-white hover:text-cyan-300 transition text-lg flex-grow overflow-hidden line-clamp-3">
+                {item.title}
+              </p>
+
+              <p className="text-sm text-gray-400 mt-1">
+                {isBook ? `Publisher: ${item.publisher || 'N/A'}` : `Year: ${item.year || 'N/A'}`}
+              </p>
+              <p className="text-xs text-gray-500 mt-1 mb-4 font-mono">
+                {isBook ? `Year: ${item.year || 'N/A'}` : `ID: ${item.id}`}
+              </p>
+
+              {/* ACTION: View PDF Button (Only for Journals/Articles) */}
+              {!isBook && (
+                <a
+                  href={item.pdfUrl}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="mt-auto flex items-center justify-center px-4 py-2 text-sm font-semibold text-black bg-cyan-500 rounded-lg shadow-xl shadow-cyan-500/30 hover:bg-cyan-400 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-cyan-400/50"
+                >
+                  <FileTextIcon className="w-4 h-4 mr-2" />
+                  View PDF & Learn More
+                </a>
+              )}
             </div>
-
-            {/* Publication Details */}
-            <p className="font-medium text-white group-hover:text-cyan-300 transition text-lg flex-grow overflow-hidden line-clamp-3">
-              {item.title}
-            </p>
-
-            <p className="text-sm text-gray-400 mt-1">
-              {isBook ? `Published Year: ${item.year || 'N/A'}` : `Year: ${item.year || 'N/A'}`}
-            </p>
-            <p className="text-xs text-gray-500 mt-1 mb-4 font-mono">
-              {isBook ? item.publisher : `ID: ${item.id}`}
-            </p>
-
-            {/* ACTION: View PDF Button (Only for Journals/Articles) */}
-            {!isBook && (
-              <a
-                href={item.pdfUrl}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="mt-auto flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-cyan-600/90 rounded-lg shadow-lg shadow-cyan-500/20 hover:bg-cyan-500 transition-all duration-300 transform hover:scale-[1.05]"
-              >
-                <FileTextIcon className="w-4 h-4 mr-2" />
-                View PDF & Learn More
-              </a>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <p className="text-xs text-gray-500 mt-4 italic">
-        *Total items displayed: {items.length}. Scroll horizontally to view more items.*
+        *Scroll is auto-animated. Hover over the section to pause the scroll.*
       </p>
     </div>
   );
+};
+
+// --- Main Component ---
+const Publications = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 font-sans text-gray-100 overflow-hidden">
+      
+      {/* --- CSS Keyframes for Animations --- */}
+      <style>{`
+        @keyframes headerFadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Keyframes for the continuous horizontal scroll */
+        @keyframes autoScroll {
+            /* Start at 0% translation */
+            from { transform: translateX(0%); }
+            /* Translate 50% of the content width (since the list is duplicated) to create a seamless loop */
+            to { transform: translateX(-50%); } 
+        }
         
-        {/* --- CSS Keyframes for Animations --- */}
-        <style>{`
-            @keyframes headerFadeUp {
-                from { opacity: 0; transform: translateY(20px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes slideIn {
-                from { opacity: 0; transform: translateY(30px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .animate-header-fade {
-                animation: headerFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-                opacity: 0; 
-            }
-            .animate-slide-up-fade {
-                animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-                opacity: 0; 
-            }
-            
-            /* Custom scrollbar for better visibility - IMPORTANT FOR SCROLLING SECTION */
-            .publication-scroll-container::-webkit-scrollbar {
-                height: 8px;
-            }
-            .publication-scroll-container::-webkit-scrollbar-thumb {
-                background-color: #06b6d4; /* cyan-500 */
-                border-radius: 10px;
-            }
-            .publication-scroll-container::-webkit-scrollbar-track {
-                background: #1f2937; /* gray-800 */
-            }
-        `}</style>
-        
+        .animate-header-fade {
+            animation: headerFadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0; 
+        }
+        .animate-slide-up-fade {
+            animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            opacity: 0; 
+        }
+
+        /* Styles for the auto-scrolling container */
+        .publication-scroll-content {
+            display: flex; /* Must be a flex container */
+            width: max-content; /* Must be wide enough to hold all content (including duplicates) */
+            /* Apply the continuous scroll animation */
+            animation-name: autoScroll;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite; 
+        }
+
+        /* Pause animation on hover */
+        .publication-scroll-container-wrapper:hover .publication-scroll-content {
+            animation-play-state: paused;
+        }
+
+        /* Hide the manual scrollbar, as the movement is animated */
+        .publication-scroll-container-wrapper {
+             /* Use padding-bottom for the gap where the scrollbar would be */
+             padding-bottom: 1rem; 
+        }
+
+        /* You can uncomment this section if you still want a visual manual scrollbar as a fallback */
+        /*
+        .publication-scroll-container-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+        .publication-scroll-container-wrapper::-webkit-scrollbar-thumb {
+            background-color: #06b6d4; 
+            border-radius: 10px;
+        }
+        .publication-scroll-container-wrapper::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        */
+      `}</style>
+      
       <div className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-6xl md:text-7xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white animate-header-fade">
-            Academic Publications Archive
+            Academic Publications Archive 📚
           </h1>
 
-          <div className="space-y-20">
-            {/* ---------- JOURNALS / RESEARCH ARTICLES (43 total) ---------- */}
+          <div className="space-y-24">
+            {/* ---------- JOURNALS / RESEARCH ARTICLES (Slow Scroll) ---------- */}
             <PublicationList
               title="Journals / Research Articles"
               items={mockJournals}
               isBook={false}
+              duration='120s' // Slower scroll for a larger list
             />
 
-            {/* ---------- BOOKS / BOOK CHAPTERS (10 total) ---------- */}
+            {/* ---------- BOOKS / BOOK CHAPTERS (Faster Scroll) ---------- */}
             <PublicationList
               title="Books / Book Chapters"
               items={mockBooks}
               isBook={true}
+              duration='45s' // Faster scroll for a smaller list
             />
           </div>
         </div>
@@ -203,4 +246,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Publications;
