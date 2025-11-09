@@ -232,7 +232,7 @@ const Publications = () => {
       <div className="py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-6xl md:text-7xl font-extrabold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white animate-header-fade">
-            Academic Publications Archive 📚
+            Academic Publications Archive 
           </h1>
 
           <div className="space-y-24">

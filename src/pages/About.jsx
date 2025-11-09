@@ -1,34 +1,128 @@
 import React from 'react';
 
-// --- Image Imports ---
-import authorImg1 from '../assets/Author Gallary/author 1.jpg';
-import authorImg3 from '../assets/Author Gallary/author 3.jpg';
-import authorImg4 from '../assets/Author Gallary/author 4.jpg';
-import authorImg5 from '../assets/Author Gallary/Author 5.jpg';
-import authorImg6 from '../assets/Author Gallary/Author 6.jpg';
-import authorImg7 from '../assets/Author Gallary/Author 7.jpg';
-import authorImg8 from '../assets/Author Gallary/Author 8.jpg';
-import authorImg9 from '../assets/Author Gallary/author 9.jpg';
-import authorImg0 from '../assets/Author Gallary/author10.jpg';
+// --- Image Imports (Expanded to 56) ---
+// Note: Assumes files are named 'author 1.jpg', 'author 2.jpg', ..., 'author 56.jpg'
+// in the '../assets/Author Gallary/' directory.
+import authorImg1 from '../assets/Author Gallary/1.jpg';
+import authorImg2 from '../assets/Author Gallary/2.jpeg';
+import authorImg3 from '../assets/Author Gallary/3.jpeg';
+import authorImg4 from '../assets/Author Gallary/4.jpeg';
+import authorImg5 from '../assets/Author Gallary/5.jpeg';
+import authorImg6 from '../assets/Author Gallary/6.jpeg';
+import authorImg7 from '../assets/Author Gallary/7.jpeg';
+import authorImg8 from '../assets/Author Gallary/8.jpeg';
+import authorImg9 from '../assets/Author Gallary/9.jpeg';
+import authorImg10 from '../assets/Author Gallary/10.jpeg';
+import authorImg11 from '../assets/Author Gallary/11.jpeg';
+import authorImg12 from '../assets/Author Gallary/12.jpeg';
+import authorImg13 from '../assets/Author Gallary/13.jpeg';
+import authorImg14 from '../assets/Author Gallary/14.jpeg';
+import authorImg15 from '../assets/Author Gallary/15.jpeg';
+import authorImg16 from '../assets/Author Gallary/16.jpeg';
+import authorImg17 from '../assets/Author Gallary/17.jpeg';
+import authorImg18 from '../assets/Author Gallary/18.jpeg';
+import authorImg19 from '../assets/Author Gallary/19.jpeg';
+import authorImg20 from '../assets/Author Gallary/20.jpeg';
+import authorImg21 from '../assets/Author Gallary/21.jpeg';
+import authorImg22 from '../assets/Author Gallary/22.jpeg';
+import authorImg23 from '../assets/Author Gallary/23.jpeg';
+import authorImg24 from '../assets/Author Gallary/24.jpeg';
+import authorImg25 from '../assets/Author Gallary/25.jpeg';
+import authorImg26 from '../assets/Author Gallary/26.jpg';
+import authorImg27 from '../assets/Author Gallary/27.jpeg';
+import authorImg28 from '../assets/Author Gallary/28.jpeg';
+import authorImg29 from '../assets/Author Gallary/29.jpeg';
+import authorImg30 from '../assets/Author Gallary/30.jpeg';
+import authorImg31 from '../assets/Author Gallary/31.jpeg';
+import authorImg32 from '../assets/Author Gallary/32.jpeg';
+import authorImg33 from '../assets/Author Gallary/33.jpeg';
+import authorImg34 from '../assets/Author Gallary/34.jpeg';
+import authorImg35 from '../assets/Author Gallary/35.jpeg';
+import authorImg36 from '../assets/Author Gallary/36.jpeg';
+import authorImg37 from '../assets/Author Gallary/37.jpeg';
+import authorImg38 from '../assets/Author Gallary/38.jpeg';
+import authorImg39 from '../assets/Author Gallary/39.jpeg';
+import authorImg40 from '../assets/Author Gallary/40.jpeg';
+import authorImg41 from '../assets/Author Gallary/41.jpeg';
+import authorImg42 from '../assets/Author Gallary/42.jpeg';
+import authorImg43 from '../assets/Author Gallary/43.jpeg';
+import authorImg44 from '../assets/Author Gallary/44.jpeg';
+import authorImg45 from '../assets/Author Gallary/45.jpeg';
+import authorImg46 from '../assets/Author Gallary/46.jpeg';
+import authorImg47 from '../assets/Author Gallary/47.jpeg';
+import authorImg48 from '../assets/Author Gallary/48.jpeg';
+import authorImg49 from '../assets/Author Gallary/49.jpeg';
+import authorImg50 from '../assets/Author Gallary/50.jpeg';
+import authorImg51 from '../assets/Author Gallary/51.jpeg';
+import authorImg52 from '../assets/Author Gallary/52.jpeg';
+import authorImg53 from '../assets/Author Gallary/53.jpeg';
+import authorImg54 from '../assets/Author Gallary/54.jpeg';
+import authorImg55 from '../assets/Author Gallary/55.jpeg';
+import authorImg56 from '../assets/Author Gallary/56.jpeg';
 
-// --- Data for Author Cards ---
+
+// --- Data for Author Cards (Updated to use 56 profiles) ---
 const authorProfiles = [
-  { src: authorImg0, name: 'Ms. Simran. I', title: 'Lead Researcher' },
-  { src: authorImg1, name: 'Author Name 2', title: 'Data Scientist' },
-  { src: authorImg3, name: 'Author Name 3', title: 'PhD Scholar' },
-  { src: authorImg4, name: 'Author Name 4', title: 'Professor Emeritus' },
-  { src: authorImg5, name: 'Author Name 5', title: 'Sr. Fellow' },
-  { src: authorImg6, name: 'Author Name 6', title: 'Astrophysicist' },
-  { src: authorImg7, name: 'Author Name 7', title: 'Medical Doctor' },
-  { src: authorImg8, name: 'Author Name 8', title: 'AI Expert' },
-  { src: authorImg9, name: 'Author Name 9', title: 'Economist' },
-  // Adding a few more profiles to ensure scrolling is visible
-  // { src: authorImg0, name: 'Author Name 10', title: 'Biologist' },
-  // { src: authorImg1, name: 'Author Name 11', title: 'Chemist' },
+  { src: authorImg1, name: 'Mr. Abhisek Rath ' },
+  { src: authorImg2, name: ' Devayani Sarmah' },
+  { src: authorImg3, name: 'Dr. Popy Bora' },
+  { src: authorImg4, name: 'Ms. Shruti Krishnan ' },
+  { src: authorImg5, name: 'Ms. Keerthana Raghuthaman' },
+  { src: authorImg6, name: 'Ms.KarthikaSuresh' },
+  { src: authorImg7, name: 'Dr.AmarchandChordiaMurugan' },
+  { src: authorImg8, name: 'Dr. Rajeev Ranjan' },
+  { src: authorImg9, name: 'Dr. Valentina A. Kratasyuk' },
+  { src: authorImg10, name: 'Dr. Biplab Mandal' },
+  { src: authorImg11, name: 'Dr. Bidhan Chandra Patra ' },
+  { src: authorImg12, name: ' Dr. Debabrata Senapati' },
+  { src: authorImg13, name: 'Mr. Sapam Riches Singh' },
+  { src: authorImg14, name: ' Ms. Pooja Joshi ' },
+  { src: authorImg15, name: 'Mr. Santosh Mallikarjun Bhavi ' },
+  { src: authorImg16, name: 'Mr. Bothe Thokchom' },
+  { src: authorImg17, name: ' Ms. Megha B. Abbigeri' },
+  { src: authorImg18, name: 'Dr.MosesShalini' },
+  { src: authorImg19, name: 'Dr. B. P. Harini ' },
+  { src: authorImg20, name: ' Dr. Ramesh Babu Yarajarla' },
+  { src: authorImg21, name: ' Dr. Mamatha Bhanu L.S' },
+  { src: authorImg22, name: 'Mr.Manju K' },
+  { src: authorImg23, name: ' Dr.RaghurajSChouhan' },
+  { src: authorImg24, name: 'Mr. Pavan T.K' },
+  { src: authorImg25, name: ' Ms. Supritha S.K' },
+  { src: authorImg26, name: ' Ms. Simran. I' },
+  { src: authorImg27, name: ' Dr. Navyashree B' },
+  { src: authorImg28, name: ' Dr. Chandan S' },
+  { src: authorImg29, name: 'Dr. Layeeqa Banu ' },
+  { src: authorImg30, name: ' Ms. Shayista. H' },
+  { src: authorImg31, name: ' Dr. M. N. Nagendra Prasad' },
+  { src: authorImg32, name: ' Dr. Kanthesh M Basalingappa' },
+  { src: authorImg33, name: ' Dr. Nandini G' },
+  { src: authorImg34, name: ' Dr. Vasantha Kumar. S' },
+  { src: authorImg35, name: 'Dr. Umashankara. M' },
+  { src: authorImg36, name: ' Dr. Arjun H.A ' },
+  { src: authorImg37, name: ' Dr. Ashwini Prasad. P' },
+  { src: authorImg38, name: ' Ms. Ranjini H. K' },
+  { src: authorImg39, name: 'Ms. Apeksha. V' },
+  { src: authorImg40, name: 'Ms. Akhila ' },
+  { src: authorImg41, name: 'Ms. Kripali K.P' },
+  { src: authorImg42, name: ' Ms. Shreya Vinayak Hegde' },
+  { src: authorImg43, name: 'Dr. R.Kavitha ' },
+  { src: authorImg44, name: 'Mrs. Amalthi. P' },
+  { src: authorImg45, name: 'Dr. S. Satish' },
+  { src: authorImg46, name: 'Mr.Sandesh. P ' },
+  { src: authorImg47, name: 'Ms. Sahana M.S.' },
+  { src: authorImg48, name: ' Dr. Qais Aslam' },
+  { src: authorImg49, name: 'Dr. Hemalatha M.S' },
+  { src: authorImg50, name: ' Prof. Dr. Sikander Ali' },
+  { src: authorImg51, name: ' Ms. Aqsa Iqbal' },
+  { src: authorImg52, name: ' Ms. Rukhma, a distinguished' },
+  { src: authorImg53, name: ' Prof. Ratnesh Das' },
+  { src: authorImg54, name: 'Mr. Atish Roy' },
+  { src: authorImg55, name: 'Dr. Elizaveta Mukhanova' },
+  { src: authorImg56, name: 'Dr. Nutan Shukla' },
 ];
 
-// --- Author Card Component ---
-const AuthorCard = ({ src, name, title, delay }) => (
+// --- Author Card Component (Title removed) ---
+const AuthorCard = ({ src, name, delay }) => (
   <div
     className={`flex-shrink-0 min-w-32 text-center p-3 sm:p-4 bg-gray-800 rounded-lg shadow-xl hover:shadow-cyan-500/50 transition duration-500 ease-in-out transform hover:scale-105 mx-2 sm:mx-3`}
     style={{
@@ -49,7 +143,7 @@ const AuthorCard = ({ src, name, title, delay }) => (
       }}
     />
     <h4 className="text-sm font-semibold text-white truncate">{name}</h4>
-    <p className="text-xs text-gray-400 truncate">{title}</p>
+    {/* Removed: <p className="text-xs text-gray-400 truncate">{title}</p> */}
   </div>
 );
 
@@ -145,7 +239,6 @@ export default function About() {
                 key={index} 
                 src={author.src} 
                 name={author.name} 
-                title={author.title} 
                 delay={20 * index + 600} // Small stagger for a ripple effect
               />
             ))}

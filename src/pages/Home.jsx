@@ -13,7 +13,7 @@ import Image7 from '../assets/Scientist community photos/7.jpeg';
 import AnnaMaria from '../assets/Scientist community photos/8.png';
 import Kratasuk from '../assets/Scientist community photos/9.jpg';
 import Image10 from '../assets/Scientist community photos/10.png';
-import Image11 from '../assets/Scientist community photos/11.jpeg';
+import Image11 from '../assets/Scientist community photos/11.jpeg'; 
 import Image12 from '../assets/Scientist community photos/12.png';
 import Image13 from '../assets/Scientist community photos/13.png';
 import Image14 from '../assets/Scientist community photos/14.png';
@@ -95,24 +95,24 @@ export const Testimonials = () => (
 // FEATURED SCIENTISTS DATA
 // --------------------------------------------------------
 const FEATURED_SCIENTISTS_DATA = [
-    { name: "Dr. Syed Baker", title: "Biochemistry Expert", image: DrBaker },
-    { name: "Wolfgang Kroutil", title: "Artificial Intelligence", image: WolfgangKroutil },
-    { name: "Researcher C", title: "Theoretical Physics", image: Image3 },
-    { name: "Researcher D", title: "Information Technology", image: Image4 },
-    { name: "Alla Salmina", title: "Organic Chemistry", image: AllaSalmina },
-    { name: "Dr. Harini", title: "Computer Science", image: HariniMadam },
-    { name: "Researcher G", title: "Molecular Biology", image: Image7 },
-    { name: "Anna Maria", title: "Neuroscience", image: AnnaMaria },
+    // { name: "Dr. Syed Baker", title: "Biochemistry Expert", image: DrBaker },
+    // { name: "Wolfgang Kroutil", title: "Artificial Intelligence", image: WolfgangKroutil },
+    { name: "Alla Salmina", title: "Theoretical Physics", image: Image3 },
+    { name: "Anna Maria", title: "Information Technology", image: Image4 },
+    { name: "Dr. Syed Baker", title: "Organic Chemistry", image: AllaSalmina },
+    // { name: "Dr. Harini", title: "Computer Science", image: HariniMadam },
+    // { name: "Researcher G", title: "Molecular Biology", image: Image7 },
+    { name: "Harini Madam", title: "Neuroscience", image: AnnaMaria },
     { name: "Kratasuk", title: "Biomedical Engineering", image: Kratasuk },
-    { name: "Researcher J", title: "Environmental Science", image: Image10 },
-    { name: "Researcher K", title: "Environmental Science", image: Image11 },
-    { name: "Researcher L", title: "Environmental Science", image: Image12 },
-    { name: "Researcher M", title: "Environmental Science", image: Image13 },
-    { name: "Researcher N", title: "Environmental Science", image: Image14 },
-    { name: "Researcher O", title: "Environmental Science", image: Image15 },
-    { name: "Researcher P", title: "Environmental Science", image: Image16 },
-    { name: "Researcher Q", title: "Environmental Science", image: Image17 },
-    { name: "Researcher R", title: "Environmental Science", image: Image18 },
+    { name: "MS Thakur", title: "Environmental Science", image: Image10 },
+    { name: "NRS", title: "Environmental Science", image: Image11 },
+    { name: "Olga Y Kohlova", title: "Environmental Science", image: Image12 },
+    { name: "Olga", title: "Environmental Science", image: Image13 },
+    { name: "Rangappa", title: "Environmental Science", image: Image14 },
+    { name: "Satish", title: "Environmental Science", image: Image15 },
+    // { name: "Researcher P", title: "Environmental Science", image: Image16 },
+    // { name: "Researcher Q", title: "Environmental Science", image: Image17 },
+    { name: "Wolfgang", title: "Environmental Science", image: Image18 },
 ];
 
 // --------------------------------------------------------
