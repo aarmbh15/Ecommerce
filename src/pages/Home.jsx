@@ -92,31 +92,25 @@ export const Testimonials = () => (
 );
 // --------------------------------------------------------
 
-// FEATURED SCIENTISTS DATA
+// FEATURED SCIENTISTS DATA (UPDATED)
 // --------------------------------------------------------
 const FEATURED_SCIENTISTS_DATA = [
-    // { name: "Dr. Syed Baker", title: "Biochemistry Expert", image: DrBaker },
-    // { name: "Wolfgang Kroutil", title: "Artificial Intelligence", image: WolfgangKroutil },
-    { name: "Alla Salmina", title: "Theoretical Physics", image: Image3 },
-    { name: "Anna Maria", title: "Information Technology", image: Image4 },
-    { name: "Dr. Syed Baker", title: "Organic Chemistry", image: AllaSalmina },
-    // { name: "Dr. Harini", title: "Computer Science", image: HariniMadam },
-    // { name: "Researcher G", title: "Molecular Biology", image: Image7 },
-    { name: "Harini Madam", title: "Neuroscience", image: AnnaMaria },
-    { name: "Kratasuk", title: "Biomedical Engineering", image: Kratasuk },
-    { name: "MS Thakur", title: "Environmental Science", image: Image10 },
-    { name: "NRS", title: "Environmental Science", image: Image11 },
-    { name: "Olga Y Kohlova", title: "Environmental Science", image: Image12 },
-    { name: "Olga", title: "Environmental Science", image: Image13 },
-    { name: "Rangappa", title: "Environmental Science", image: Image14 },
-    { name: "Satish", title: "Environmental Science", image: Image15 },
-    // { name: "Researcher P", title: "Environmental Science", image: Image16 },
-    // { name: "Researcher Q", title: "Environmental Science", image: Image17 },
-    { name: "Wolfgang", title: "Environmental Science", image: Image18 },
+    { name: "Dr. Alla Salmina", image: Image3 }, // Mapped to original Image3
+    { name: "Dr. Anna Maria", image: Image4 }, // Mapped to original Image4
+    { name: "Dr. Syed Baker", image: AllaSalmina }, // Mapped to original AllaSalmina (Image5)
+    { name: "Prof. Harini B.P", image: AnnaMaria }, // Mapped to original AnnaMaria (Image8)
+    { name: "Kratasuk", image: Kratasuk },
+    { name: "Dr. M. S. Thakur", image: Image10 }, // Mapped to original Image10
+    { name: "Prof. Niranjan Raj. s", image: Image11 }, // Mapped to original Image11
+    { name: "Dr. Olga Y Kohlova", image: Image12 }, // Mapped to original Image12
+    { name: "Dr. Olga", image: Image13 }, // Mapped to original Image13
+    { name: "Prof. K.S.Rangappa", image: Image14 }, // Mapped to original Image14
+    { name: "Prof. S. Satish", image: Image15 }, // Mapped to original Image15
+    { name: "Dr. Wolfgang", image: Image18 }, // Mapped to original Image18
 ];
 
 // --------------------------------------------------------
-// FEATURED SCIENTISTS SECTION (CLEANED UP FOR SYNTAX ERROR)
+// FEATURED SCIENTISTS SECTION (UPDATED)
 // --------------------------------------------------------
 export const FeaturedScientists = () => {
     const controls = useAnimation();
@@ -134,8 +128,7 @@ export const FeaturedScientists = () => {
                         ease: "linear",
                     },
                 });
-                // Line 135: This is the line that was failing.
-                // We ensure it is a clean, separate instruction.
+                // We reset the position to create the seamless loop effect
                 await controls.start({ x: "0%" }); 
             }
         };
@@ -179,17 +172,12 @@ export const FeaturedScientists = () => {
                             <img
                                 src={scientist.image}
                                 alt={scientist.name}
-                                className="w-full h-48 object-cover object-top rounded-xl mb-4 border-2 border-cyan-500/20"
+                                // Adjusted image classes for consistent square size
+                                className="w-full aspect-square object-cover object-top rounded-xl mb-4 border-2 border-cyan-500/20"
                             />
                             <div className="text-left">
                                 <h4 className="text-xl font-semibold text-white">{scientist.name}</h4>
-                                <p className="text-cyan-400 text-sm">{scientist.title}</p>
-                                <p className="text-gray-400 text-xs mt-2 italic">
-                                    Read their latest publication on our platform.
-                                </p>
-                                <Link to={`/scientist/${index % FEATURED_SCIENTISTS_DATA.length}`} className="text-xs text-cyan-500 hover:text-cyan-400 mt-2 block font-medium">
-                                    View Profile →
-                                </Link>
+                                {/* Removed: Specialization, Publication Text, and View Profile button */}
                             </div>
                         </motion.div>
                     ))}
@@ -200,7 +188,7 @@ export const FeaturedScientists = () => {
 }
 
 // --------------------------------------------------------
-// HERO SECTION (MAINTAINING CENTERED DESKTOP VIEW)
+// HERO SECTION
 // --------------------------------------------------------
 export const ImageHeroSection = () => {
     // Array of your imported images for the grid (first 15 images)
@@ -259,7 +247,7 @@ export const ImageHeroSection = () => {
                             TOP <span className="text-lg">5%</span>
                         </motion.p>
                         <motion.h2 variants={itemVariants} className="text-xl sm:text-2xl font-extrabold tracking-widest text-white mb-6">
-                            SCIENTIST, <span className="text-lime-400">ACADEMICIAN</span>, <span className="text-lime-400">INNOVATORS</span>
+                            <span className="text-lime-400">SCIENTISTS, ACADEMICIANS,</span> <span className="text-lime-400"> INNOVATORS</span>
                         </motion.h2>
                         <motion.p variants={itemVariants} className="text-sm sm:text-base max-w-xl md:max-w-2xl text-gray-300 font-medium leading-relaxed">
                             HONOURING, AND EMPOWERING RESEARCHERS AS THEY ADVANCE KNOWLEDGE FOR THE BETTERMENT OF SOCIETY
@@ -268,36 +256,39 @@ export const ImageHeroSection = () => {
                 </div>
 
                 {/* RESEARCHER GRID */}
-                <motion.div 
-                    className="w-full max-w-[1200px] mt-12 mb-8 px-4"
-                    variants={{
-                        visible: { transition: { staggerChildren: 0.03 } }
-                    }}
-                >
-                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 justify-center">
-                        {profileImages.slice(0, 10).map((image, index) => (
-                            <motion.img 
-                                key={index}
-                                variants={itemVariants}
-                                src={image} 
-                                alt={`Researcher ${index + 1}`} 
-                                className="w-full aspect-square object-cover rounded-md border border-gray-600 shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:border-cyan-400"
-                            />
-                        ))}
-                    </div>
+              <motion.div 
+  className="w-full max-w-[1200px] mt-12 mb-8 px-4"
+  variants={{
+    visible: { transition: { staggerChildren: 0.03 } }
+  }}
+>
+  {/* --- First Row (10 images) --- */}
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center">
+    {profileImages.slice(0, 10).map((image, index) => (
+      <motion.img 
+        key={index}
+        variants={itemVariants}
+        src={image} 
+        alt={`Researcher ${index + 1}`} 
+        className="w-full aspect-square object-cover rounded-md border border-gray-600 shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:border-cyan-400"
+      />
+    ))}
+  </div>
 
-                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-4 justify-center mt-4 w-5/6 sm:w-4/6 mx-auto">
-                        {profileImages.slice(10, 15).map((image, index) => (
-                            <motion.img 
-                                key={index + 10}
-                                variants={itemVariants}
-                                src={image} 
-                                alt={`Researcher ${index + 11}`} 
-                                className="w-full aspect-square object-cover rounded-md border border-gray-600 shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:border-cyan-400"
-                            />
-                        ))}
-                    </div>
-                </motion.div>
+  {/* --- Second Row (remaining images) --- */}
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center mt-6">
+    {profileImages.slice(10, 15).map((image, index) => (
+      <motion.img 
+        key={index + 10}
+        variants={itemVariants}
+        src={image} 
+        alt={`Researcher ${index + 11}`} 
+        className="w-full aspect-square object-cover rounded-md border border-gray-600 shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:border-cyan-400"
+      />
+    ))}
+  </div>
+</motion.div>
+
 
                 {/* BOTTOM TEXT & BUTTONS */}
                 <motion.p variants={itemVariants} className="text-base sm:text-lg font-extrabold tracking-wider text-white mb-8 mt-4">
@@ -309,14 +300,6 @@ export const ImageHeroSection = () => {
                     variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
                 >
                     <motion.div variants={itemVariants} className="group">
-                        <Link to="/vision" className={buttonClasses}>
-                            <svg className={arrowClasses} viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                            </svg>
-                            <span className="mt-0">OUR VISION</span>
-                        </Link>
-                    </motion.div>
-                    <motion.div variants={itemVariants} className="group">
                         <Link to="/join" className={buttonClasses}>
                             <svg className={arrowClasses} viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
@@ -327,7 +310,6 @@ export const ImageHeroSection = () => {
                 </motion.div>
             </div>
         </motion.section>
-
     );
 };
 
@@ -353,13 +335,13 @@ export const AboutSection = () => (
                 variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
             >
                 <motion.p variants={itemVariants}>
-                    **PhDians** is a global platform dedicated to celebrating the scientific community and promoting research excellence across all disciplines. Our mission is to recognize outstanding contributions, provide a platform for publishing scholarly work, and foster **collaboration** among researchers worldwide.
+                    PhDians is a global platform dedicated to celebrating the scientific community and promoting research excellence across all disciplines. Our mission is to recognize outstanding contributions, provide a platform for publishing scholarly work, and foster collaboration among researchers worldwide.
                 </motion.p>
                 <motion.p variants={itemVariants}>
-                    Through journals, books, mentorship programs, and international collaborations, PhDians connects scientists, academicians, and innovators, enabling them to **share knowledge**, exchange ideas, and drive meaningful impact in their fields.
+                    Through journals, books, mentorship programs, and international collaborations, PhDians connects scientists, academicians, and innovators, enabling them to share knowledge, exchange ideas, and drive meaningful impact in their fields.
                 </motion.p>
                 <motion.p variants={itemVariants}>
-                    We believe that every discovery — whether by a student, early-career researcher, or seasoned scientist — contributes to building a **sustainable and innovative scientific future**. PhDians is committed to supporting, honouring, and empowering researchers as they advance knowledge for the betterment of society.
+                    We believe that every discovery — whether by a student, early-career researcher, or seasoned scientist — contributes to building a sustainable and innovative scientific future. PhDians is committed to supporting, honouring, and empowering researchers as they advance knowledge for the betterment of society.
                 </motion.p>
             </motion.div>
 

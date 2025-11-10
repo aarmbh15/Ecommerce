@@ -221,7 +221,7 @@ export default function About() {
             About PhDians
           </h1>
           <p className="text-base sm:text-xl text-gray-400 mt-4 max-w-3xl mx-auto px-2 transition duration-700 delay-300 ease-out">
-            A global platform dedicated to celebrating the scientific community and promoting research excellence** across all disciplines.
+            A global platform dedicated to celebrating the scientific community and promoting research excellence across all disciplines.
           </p>
         </header>
 
@@ -260,7 +260,7 @@ export default function About() {
                         Vision
                     </h3>
                     <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
-                        To create a world where scientific discovery knows no boundaries and **collaboration drives innovation**.
+                        To create a world where scientific discovery knows no boundaries and collaboration drives innovation.
                     </p>
                 </div>
 
@@ -270,7 +270,7 @@ export default function About() {
                         Mission
                     </h3>
                     <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
-                        PhDians is committed to **honouring scientific excellence**, empowering researchers, and fostering a **global community** of scholars.
+                        PhDians is committed to honouring scientific excellence, empowering researchers, and fostering a global community of scholars.
                     </p>
                 </div>
             </div>
@@ -289,7 +289,7 @@ export default function About() {
             PhDians was founded to address the growing need for a centralized, supportive, and international platform that not only showcases high-impact research but also connects scholars across various disciplines and geographies.
           </p>
           <p className="text-base sm:text-lg text-gray-300 leading-relaxed border-l-4 border-cyan-400 pl-4 italic transition duration-500 hover:border-cyan-200">
-            Over the years, PhDians has grown into a thriving **international network** that champions open science, mentorship, and cross-cultural academic exchange, empowering the next generation of thought leaders.
+            Over the years, PhDians has grown into a thriving international network that champions open science, mentorship, and cross-cultural academic exchange, empowering the next generation of thought leaders.
           </p>
         </div>
         
@@ -308,7 +308,7 @@ export default function About() {
                         <span className="text-cyan-400 mr-3 text-3xl transition duration-300">★</span> Advisory Board / Founders
                     </h3>
                     <p className="text-gray-300 text-sm sm:text-base">
-                        Our advisory board is composed of **distinguished academicians and leaders** from top institutions worldwide, guiding our strategic direction.
+                        Our advisory board is composed of distinguished academicians and leaders from top institutions worldwide, guiding our strategic direction.
                     </p>
                 </div>
 
@@ -318,7 +318,7 @@ export default function About() {
                         <span className="text-cyan-400 mr-3 text-3xl transition duration-300">🎓</span> Our Mentors
                     </h3>
                     <p className="text-gray-300 text-sm sm:text-base">
-                        PhDians mentors are **leaders with 25+ years of experience** in research, industry, and academia, providing invaluable career guidance.
+                        PhDians mentors are leaders with 25+ years of experience in research, industry, and academia, providing invaluable career guidance.
                     </p>
                 </div>
 
@@ -328,7 +328,7 @@ export default function About() {
                         <span className="text-cyan-400 mr-3 text-3xl transition duration-300">🌐</span> Global Collaborations
                     </h3>
                     <p className="text-gray-300 text-sm sm:text-base">
-                        We foster active **collaborations with research institutes and universities worldwide** to maximize our collective scientific impact.
+                        We foster active collaborations with research institutes and universities worldwide to maximize our collective scientific impact.
                     </p>
                 </div>
             </div>
