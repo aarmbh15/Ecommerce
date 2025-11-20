@@ -1,481 +1,384 @@
-import { Link } from 'react-router-dom';
-import { motion, useAnimation, useInView, useSpring, useMotionValue, useTransform } from 'framer-motion';
-import { useEffect, useRef } from 'react'; 
+import React, { useState } from 'react';
+import { ShoppingCart, Home, Info, User, Zap } from 'lucide-react';
 
-// --- Import Local Images with Actual Filenames ---
-import DrBaker from '../assets/Scientist community photos/1.jpeg';
-import WolfgangKroutil from '../assets/Scientist community photos/2.jpeg';
-import Image3 from '../assets/Scientist community photos/3.png';
-import Image4 from '../assets/Scientist community photos/4.jpg';
-import AllaSalmina from '../assets/Scientist community photos/5.jpeg';
-import HariniMadam from '../assets/Scientist community photos/6.jpeg';
-import Image7 from '../assets/Scientist community photos/7.jpeg';
-import AnnaMaria from '../assets/Scientist community photos/8.png';
-import Kratasuk from '../assets/Scientist community photos/9.jpg';
-import Image10 from '../assets/Scientist community photos/10.png';
-import Image11 from '../assets/Scientist community photos/11.jpeg'; 
-import Image12 from '../assets/Scientist community photos/12.png';
-import Image13 from '../assets/Scientist community photos/13.png';
-import Image14 from '../assets/Scientist community photos/14.png';
-import Image15 from '../assets/Scientist community photos/15.jpeg';
-import Image16 from '../assets/Scientist community photos/16.jpeg';
-import Image17 from '../assets/Scientist community photos/17.jpg';
-import Image18 from '../assets/Scientist community photos/18.jpg';
+// --- COLOR PALETTE DEFINITION ---
+// Primary: Bottle Green
+const COLOR_PRIMARY = '#006A4E'; 
+// Accent: Muted Gold/Bronze
+const COLOR_ACCENT = '#CD7F32';
+// Neutral Background
+const COLOR_BG = '#F5F5F5';
+// Dark Text
+const COLOR_TEXT = '#1F2937';
 
-// --- Framer Motion Variants ---
-const sectionVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { 
-        opacity: 1, 
-        y: 0, 
-        transition: { 
-            duration: 0.8, 
-            ease: "easeOut",
-            when: "beforeChildren",
-            staggerChildren: 0.2
-        } 
-    },
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-// --------------------------------------------------------
-
-// Shared Profile Data (Not used but kept for context)
-const profiles = [
-    { id: 1, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/1013c66df5281f7c0944e31ca5ec6058", name: "Researcher 1" },
-    { id: 2, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/41c27f63a216c29680e35a405ff6a5d1", name: "Researcher 2" },
-    { id: 3, isHighlighted: true, url: "https://page.gensparksite.com/v1/base64_upload/79e9c7dd3c10f8ef99f5fd693ebb7802", name: "Featured PhDian" }, 
-    { id: 4, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/6adbd275fece7d70ceb33b8706ac90e9", name: "Researcher 4" },
-    { id: 5, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/ec66cd9a334b9c1edf17510c2ba8b7d5", name: "Researcher 5" },
-    { id: 6, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/faff5e28dc4c9e0ddaede10f0a26c4fe", name: "Researcher 6" },
-    { id: 7, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/5c7f41037e53d268f74c2fd044c4e3de", name: "Researcher 7" },
-    { id: 8, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/39ddafb753116ee914fc8d91df3ae008", name: "Researcher 8" },
-    { id: 9, isHighlighted: false, url: "https://page.gensparksite.com/v1/base64_upload/e0137cd9f6b2aae94f174b08fb348296", name: "Researcher 9" },
-];
-
-// --------------------------------------------------------
-// TESTIMONIALS SECTION
-// --------------------------------------------------------
-export const Testimonials = () => (
-    <motion.section 
-        className="py-24 px-6 bg-transparent"
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-    >
-        <div className="max-w-7xl mx-auto text-center">
-            <motion.h2 variants={itemVariants} className="text-4xl font-extrabold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">
-                Voices from the Community
-            </motion.h2>
-            <div className="grid md:grid-cols-3 gap-8">
-                {[
-                    { quote: "PhDians gave my research the global visibility it deserved. The support network is invaluable.", author: "Dr. Elara Vance" },
-                    { quote: "The publication process was smooth, and the peer review was incredibly insightful. Highly recommended.", author: "Professor Kenji Tanaka" },
-                    { quote: "Joining the community opened doors to collaborations I never thought possible. A fantastic platform.", author: "Dr. Liana Chen" },
-                ].map((testimonial, index) => (
-                    <motion.div 
-                        key={index} 
-                        variants={itemVariants}
-                        className="p-8 bg-gray-800/60 rounded-xl shadow-2xl border border-gray-700 hover:border-cyan-500/50 transition-all duration-300 transform hover:-translate-y-1"
-                    >
-                        <p className="text-lg italic text-gray-300 mb-4">"{testimonial.quote}"</p>
-                        <p className="font-semibold text-cyan-400">— {testimonial.author}</p>
-                    </motion.div>
-                ))}
-            </div>
-        </div>
-    </motion.section>
+// Helper component for styled buttons
+const PrimaryButton = ({ children, onClick, disabled = false }) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    className={`
+      px-6 py-2 rounded-lg font-semibold transition duration-300 transform 
+      ${disabled ? 'bg-gray-400 cursor-not-allowed' : `bg-[${COLOR_PRIMARY}] text-white hover:bg-opacity-90 active:scale-95 shadow-lg hover:shadow-xl`}
+    `}
+    style={{ backgroundColor: disabled ? '#9CA3AF' : COLOR_PRIMARY }}
+  >
+    {children}
+  </button>
 );
-// --------------------------------------------------------
 
-// FEATURED SCIENTISTS DATA (UPDATED)
-// --------------------------------------------------------
-const FEATURED_SCIENTISTS_DATA = [
-    { name: "Dr. Alla Salmina", image: Image3 }, // Mapped to original Image3
-    { name: "Dr. Anna Maria", image: Image4 }, // Mapped to original Image4
-    { name: "Dr. Syed Baker", image: AllaSalmina }, // Mapped to original AllaSalmina (Image5)
-    { name: "Prof. Harini B.P", image: AnnaMaria }, // Mapped to original AnnaMaria (Image8)
-    { name: "Kratasuk", image: Kratasuk },
-    { name: "Dr. M. S. Thakur", image: Image10 }, // Mapped to original Image10
-    { name: "Prof. Niranjan Raj. s", image: Image11 }, // Mapped to original Image11
-    { name: "Dr. Olga Y Kohlova", image: Image12 }, // Mapped to original Image12
-    { name: "Dr. Olga", image: Image13 }, // Mapped to original Image13
-    { name: "Prof. K.S.Rangappa", image: Image14 }, // Mapped to original Image14
-    { name: "Prof. S. Satish", image: Image15 }, // Mapped to original Image15
-    { name: "Dr. Wolfgang", image: Image18 }, // Mapped to original Image18
-];
+// --- NAVIGATION COMPONENT ---
+const Header = ({ currentPage, setPage }) => {
+  const navItems = [
+    { name: 'Home', icon: Home, page: 'home' },
+    { name: 'About', icon: Info, page: 'about' },
+    { name: 'Cart', icon: ShoppingCart, page: 'cart' },
+  ];
 
-// --------------------------------------------------------
-// FEATURED SCIENTISTS SECTION (UPDATED)
-// --------------------------------------------------------
-export const FeaturedScientists = () => {
-    const controls = useAnimation();
+  const sectionItems = [
+    { name: 'Male', icon: User, page: 'male' },
+    { name: 'Female', icon: User, page: 'female' },
+    { name: 'Customized Try-On', icon: Zap, page: 'customized' },
+  ];
 
-    useEffect(() => {
-        const loopScroll = async () => {
-            if (FEATURED_SCIENTISTS_DATA.length === 0) return;
-            
-            while (true) {
-                await controls.start({
-                    x: ["0%", "-50%"],
-                    transition: {
-                        // Duration controls the speed of the loop
-                        duration: 60, 
-                        ease: "linear",
-                    },
-                });
-                // We reset the position to create the seamless loop effect
-                await controls.start({ x: "0%" }); 
-            }
-        };
-        loopScroll();
-    }, [controls]);
+  const NavLink = ({ item }) => (
+    <div
+      onClick={() => setPage(item.page)}
+      className={`
+        flex items-center space-x-2 p-3 cursor-pointer rounded-lg transition-colors
+        ${currentPage === item.page 
+          ? 'bg-opacity-10 font-bold'
+          : 'hover:bg-gray-100'
+        }
+      `}
+      style={{ 
+        color: currentPage === item.page ? COLOR_PRIMARY : COLOR_TEXT,
+        backgroundColor: currentPage === item.page ? COLOR_PRIMARY + '1A' : 'transparent' // 1A is ~10% opacity
+      }}
+    >
+      <item.icon size={20} />
+      <span>{item.name}</span>
+    </div>
+  );
 
-    // Duplicate data to create the illusion of infinite scroll
-    const extendedData = [...FEATURED_SCIENTISTS_DATA, ...FEATURED_SCIENTISTS_DATA];
+  return (
+    <header 
+      className="shadow-md sticky top-0 z-10"
+      style={{ backgroundColor: 'white' }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          <div 
+            className="text-2xl font-extrabold cursor-pointer" 
+            style={{ color: COLOR_PRIMARY }}
+            onClick={() => setPage('home')}
+          >
+            VERDANT Threads
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-6">
+            {navItems.map(item => <NavLink key={item.page} item={item} />)}
+            <div className="h-6 w-px" style={{ backgroundColor: '#D1D5DB' }} /> {/* Divider */}
+            {sectionItems.map(item => <NavLink key={item.page} item={item} />)}
+          </div>
 
-    const cardItemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
+          <div className="md:hidden">
+            <NavLink item={navItems.find(i => i.page === 'cart')} />
+          </div>
+        </div>
+        
+        {/* Mobile Section Links */}
+        <div className="md:hidden flex justify-around py-2 border-t border-gray-100">
+            {sectionItems.map(item => (
+                <div key={item.page} className="w-1/3">
+                    <NavLink item={item} />
+                </div>
+            ))}
+        </div>
+      </div>
+    </header>
+  );
+};
+
+// --- PRODUCT CARD COMPONENT ---
+const ProductCard = ({ title, category }) => (
+  <div 
+    className="bg-white p-4 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
+    style={{ color: COLOR_TEXT }}
+  >
+    <div className="h-48 rounded-lg mb-4 flex items-center justify-center bg-gray-100 border border-gray-200">
+      <div className="text-xl font-bold" style={{ color: COLOR_PRIMARY }}>
+        {title}
+      </div>
+    </div>
+    <h3 className="text-lg font-semibold">{title}</h3>
+    <p className="text-sm" style={{ color: COLOR_ACCENT }}>{category}</p>
+    <div className="flex justify-between items-center mt-3">
+      <span className="text-xl font-bold">$99.99</span>
+      <PrimaryButton onClick={() => console.log(`Added ${title} to cart`)}>
+        Add to Cart
+      </PrimaryButton>
+    </div>
+  </div>
+);
+
+// --- PAGE COMPONENTS ---
+
+const HomeContent = ({ setPage }) => (
+  <div className="text-center p-12 lg:p-24 space-y-8" style={{ color: COLOR_TEXT }}>
+    <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight" style={{ color: COLOR_PRIMARY }}>
+      Style Crafted. <br className="lg:hidden"/> Fit Perfected.
+    </h1>
+    <p className="text-xl max-w-3xl mx-auto" style={{ color: '#4B5563' }}>
+      Explore our exclusive collections for the modern wardrobe, and experience the future of fitting with our Customized Try-On feature.
+    </p>
+    <div className="flex justify-center space-x-4">
+      <PrimaryButton onClick={() => setPage('male')}>Shop Men</PrimaryButton>
+      <PrimaryButton onClick={() => setPage('female')}>Shop Women</PrimaryButton>
+    </div>
+    <div 
+        onClick={() => setPage('customized')}
+        className={`inline-flex items-center space-x-2 mt-4 text-sm font-semibold cursor-pointer transition duration-300 hover:opacity-80`}
+        style={{ color: COLOR_ACCENT }}
+    >
+        <Zap size={18} />
+        <span>Try the Customized Experience</span>
+    </div>
+
+    <div className="pt-12 grid md:grid-cols-3 gap-8 text-left">
+      <ProductCard title="Essential Blazer" category="Male Collection" />
+      <ProductCard title="A-Line Dress" category="Female Collection" />
+      <ProductCard title="The Signature Bottle Green Tee" category="Unisex" />
+    </div>
+  </div>
+);
+
+const AboutContent = () => (
+  <div className="max-w-4xl mx-auto p-8 lg:p-12 space-y-6" style={{ color: COLOR_TEXT }}>
+    <h2 className="text-4xl font-bold" style={{ color: COLOR_PRIMARY }}>Our Vision in Green</h2>
+    <p>
+      VERDANT Threads was founded on the principle of sustainable, quality fashion that doesn't compromise on personal style. We believe that clothing should fit not just your body, but your personality and lifestyle. Our name, derived from the rich green of the natural world, reflects our commitment to eco-conscious practices and timeless designs.
+    </p>
+    <p className="p-4 rounded-lg border-l-4 font-semibold" style={{ borderColor: COLOR_ACCENT, backgroundColor: '#FEF3C7' }}>
+      **Innovation in Fit:** Our journey led us to develop the customized 'Visual Fit' technology. This unique tool in our customized section allows you to visually test how colors and patterns interact with your complexion and features before you buy, ensuring every piece you purchase is a perfect match.
+    </p>
+    <h3 className="text-2xl font-bold mt-8" style={{ color: COLOR_PRIMARY }}>Quality & Commitment</h3>
+    <ul className="list-disc list-inside space-y-2 pl-4">
+      <li>**Sustainable Fabrics:** Prioritizing organic cottons and recycled materials.</li>
+      <li>**Ethical Sourcing:** Ensuring fair wages and safe working conditions globally.</li>
+      <li>**Customer Focus:** Dedicated to a seamless shopping experience, from browsing to delivery.</li>
+    </ul>
+  </div>
+);
+
+const CartContent = () => {
+  const [items] = useState([
+    { id: 1, name: 'Bottle Green Hoodie', price: 65.00, qty: 1 },
+    { id: 2, name: 'Gold Accent Scarf', price: 25.00, qty: 1 },
+  ]);
+
+  const subtotal = items.reduce((acc, item) => acc + item.price * item.qty, 0);
+
+  return (
+    <div className="max-w-4xl mx-auto p-8 lg:p-12 space-y-6" style={{ color: COLOR_TEXT }}>
+      <h2 className="text-4xl font-bold" style={{ color: COLOR_PRIMARY }}>Your Shopping Cart</h2>
+      
+      {items.length === 0 ? (
+        <p className="text-gray-500">Your cart is empty.</p>
+      ) : (
+        <div className="space-y-4">
+          {items.map(item => (
+            <div key={item.id} className="flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+              <div className="flex-1">
+                <p className="font-semibold">{item.name}</p>
+                <p className="text-sm" style={{ color: COLOR_ACCENT }}>Qty: {item.qty}</p>
+              </div>
+              <div className="text-lg font-bold">${(item.price * item.qty).toFixed(2)}</div>
+            </div>
+          ))}
+
+          <div className="border-t pt-4 mt-6 flex justify-between items-center text-xl font-bold">
+            <span>Subtotal:</span>
+            <span style={{ color: COLOR_PRIMARY }}>${subtotal.toFixed(2)}</span>
+          </div>
+
+          <div className="flex justify-end pt-4">
+            <PrimaryButton>Proceed to Checkout</PrimaryButton>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ProductList = ({ category }) => (
+  <div className="max-w-7xl mx-auto p-8 lg:p-12 space-y-8">
+    <h2 className="text-4xl font-bold text-center" style={{ color: COLOR_PRIMARY }}>{category} Collection</h2>
+    <p className="text-center text-lg" style={{ color: '#4B5563' }}>Discover our curated selection of {category.toLowerCase()} apparel.</p>
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <ProductCard title={`${category} Shirt`} category={category} />
+      <ProductCard title={`${category} Trousers`} category={category} />
+      <ProductCard title={`Bottle Green ${category} Jumper`} category={category} />
+      <ProductCard title={`Accent ${category} Watch`} category={category} />
+    </div>
+  </div>
+);
+
+const CustomizedContent = () => {
+    const [image, setImage] = useState(null);
+    const [clothColor, setClothColor] = useState(COLOR_PRIMARY);
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
-    return (
-        <motion.div 
-            className="mt-20 max-w-7xl mx-auto overflow-hidden relative" 
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-        >
-            <motion.h3 variants={itemVariants} className="text-2xl md:text-3xl font-bold mb-8 text-white text-center">
-                Featured Scientists & Publications 🧪
-            </motion.h3>
-            
-            <div className="overflow-hidden w-full">
-                <motion.div 
-                    className="flex space-x-6 pb-4 md:pb-6 px-6 min-w-max" 
-                    animate={controls}
-                    variants={{
-                        visible: { transition: { staggerChildren: 0.05 } }
-                    }}
-                >
-                    {extendedData.map((scientist, index) => (
-                        <motion.div 
-                            key={index} 
-                            variants={cardItemVariants}
-                            className="flex-shrink-0 w-64 md:w-80 p-4 bg-gray-800/40 backdrop-blur border border-gray-700 rounded-2xl shadow-xl transition-all duration-300 hover:border-cyan-500/50 hover:bg-gray-800/60"
-                        >
-                            <img
-                                src={scientist.image}
-                                alt={scientist.name}
-                                // Adjusted image classes for consistent square size
-                                className="w-full aspect-square object-cover object-top rounded-xl mb-4 border-2 border-cyan-500/20"
-                            />
-                            <div className="text-left">
-                                <h4 className="text-xl font-semibold text-white">{scientist.name}</h4>
-                                {/* Removed: Specialization, Publication Text, and View Profile button */}
-                            </div>
-                        </motion.div>
-                    ))}
-                </motion.div>
-            </div>
-        </motion.div>
-    );
-}
-
-// --------------------------------------------------------
-// HERO SECTION
-// --------------------------------------------------------
-export const ImageHeroSection = () => {
-    // Array of your imported images for the grid (first 15 images)
-    const profileImages = [
-        DrBaker, WolfgangKroutil, Image3, Image4, AllaSalmina, 
-        HariniMadam, Image7, AnnaMaria, Kratasuk, Image10, 
-        Image11, Image12, Image13, Image14, Image15
+    const colors = [
+        { name: 'Bottle Green', hex: COLOR_PRIMARY },
+        { name: 'Muted Gold', hex: COLOR_ACCENT },
+        { name: 'Navy Blue', hex: '#000080' },
+        { name: 'Charcoal Grey', hex: '#36454F' },
     ];
 
-    const buttonClasses = "flex items-center space-x-2 text-base font-semibold text-white hover:text-red-500 transition duration-300 p-3 rounded-full border border-red-600 hover:bg-red-900/30";
-    const arrowClasses = "w-5 h-5 text-red-600 transform transition-transform duration-300 group-hover:translate-x-1";
-    const customFont = { fontFamily: 'Georgia, serif' }; 
-    const svgIcon = <svg className="w-8 h-8 text-cyan-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v1H3a1 1 0 000 2h1v1a6 6 0 0012 0v-1h1a1 1 0 100-2h-1V8a6 6 0 00-6-6zm-4 7v1h8V9a4 4 0 00-8 0z" clipRule="evenodd" fillRule="evenodd"></path></svg>;
-
-
     return (
-       <motion.section 
-            className="text-white min-h-screen flex items-center pt-20 md:pt-24 pb-12 px-4 sm:px-8 lg:px-12 bg-transparent"
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-        >
-            <div className="w-full max-w-[1600px] mx-auto flex flex-col items-center text-center">
-                
-                <div className="flex flex-col md:flex-row items-center justify-center w-full max-w-7xl mx-auto mt-12 md:mt-16">
-                    
-                    {/* LEFT SIDE: P1000 and Circular Text */}
-                    <motion.div variants={itemVariants} className="flex flex-col items-center justify-center mb-8 md:mb-0 md:mr-16 relative">
-                        <div className="relative w-44 h-44 ">
-                            <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-45">
-                                <defs>
-                                    <path id="circlePath" fill="none" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/>
-                                </defs>
-                                <text fill="#00BCD4" style={{ letterSpacing: '3px', textTransform: 'uppercase', fontSize: '12px' }}>
-                                    <textPath href="#circlePath" startOffset="50%" textAnchor="middle">
-                                        WORLDS TOP MOST TALENT
-                                    </textPath>
-                                </text>
-                            </svg>
-                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-black rounded-full flex items-center justify-center border border-cyan-400/50">
-                                {svgIcon}
-                            </div>
-                        </div>
-                    </motion.div>
+        <div className="max-w-5xl mx-auto p-8 lg:p-12 space-y-8" style={{ color: COLOR_TEXT }}>
+            <h2 className="text-4xl font-bold text-center" style={{ color: COLOR_PRIMARY }}>
+                Customized Visual Try-On
+            </h2>
+            <p className="text-center text-lg max-w-3xl mx-auto" style={{ color: '#4B5563' }}>
+                Upload a picture of your face/upper body to see how different colors and styles interact with your natural features and skin tone.
+            </p>
 
-                    {/* RIGHT SIDE: Main Text */}
-                    <div className="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto">
-                        <motion.h1 
-                            variants={itemVariants}
-                            className="text-6xl sm:text-8xl font-extrabold tracking-widest text-white mb-2" 
-                            style={{ ...customFont, borderBottom: '4px solid #9A6324', paddingBottom: '5px' }}
-                        >
-                            PHDIANS
-                        </motion.h1>
-                        <motion.p variants={itemVariants} className="text-sm font-bold tracking-widest text-red-600 mb-4">
-                            TOP <span className="text-lg">5%</span>
-                        </motion.p>
-                        <motion.h2 variants={itemVariants} className="text-xl sm:text-2xl font-extrabold tracking-widest text-white mb-6">
-                            <span className="text-lime-400">SCIENTISTS, ACADEMICIANS,</span> <span className="text-lime-400"> INNOVATORS</span>
-                        </motion.h2>
-                        <motion.p variants={itemVariants} className="text-sm sm:text-base max-w-xl md:max-w-2xl text-gray-300 font-medium leading-relaxed">
-                            HONOURING, AND EMPOWERING RESEARCHERS AS THEY ADVANCE KNOWLEDGE FOR THE BETTERMENT OF SOCIETY
-                        </motion.p>
+            <div className="flex flex-col lg:flex-row gap-8">
+                {/* 1. Control Panel */}
+                <div className="lg:w-1/3 bg-white p-6 rounded-xl shadow-lg space-y-6 border border-gray-100">
+                    <h3 className="text-xl font-semibold border-b pb-3" style={{ color: COLOR_PRIMARY }}>
+                        Step 1: Upload Your Image
+                    </h3>
+                    
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleImageUpload} 
+                        className="w-full text-sm file:mr-4 file:py-2 file:px-4 
+                                    file:rounded-full file:border-0 file:text-sm file:font-semibold"
+                        style={{
+                            '--file-bg': COLOR_PRIMARY,
+                            '--file-text': 'white',
+                            '--file-hover': '#008060'
+                        }}
+                    />
+
+                    <h3 className="text-xl font-semibold border-b pb-3 pt-4" style={{ color: COLOR_PRIMARY }}>
+                        Step 2: Choose Garment Color
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                        {colors.map(color => (
+                            <div 
+                                key={color.name}
+                                onClick={() => setClothColor(color.hex)}
+                                title={color.name}
+                                className={`w-10 h-10 rounded-full cursor-pointer transition transform hover:scale-110 shadow-md border-2`}
+                                style={{ 
+                                    backgroundColor: color.hex,
+                                    borderColor: clothColor === color.hex ? COLOR_ACCENT : 'transparent',
+                                    borderWidth: clothColor === color.hex ? '3px' : '2px'
+                                }}
+                            ></div>
+                        ))}
                     </div>
+                    <p className="text-sm pt-2">Current Color: <span style={{ color: clothColor }}>{colors.find(c => c.hex === clothColor)?.name || 'Custom'}</span></p>
+
+                    <PrimaryButton disabled={!image} onClick={() => alert('Analyzing fit for selected color...')}>
+                        Analyze Fit
+                    </PrimaryButton>
                 </div>
 
-                {/* RESEARCHER GRID */}
-              <motion.div 
-  className="w-full max-w-[1200px] mt-12 mb-8 px-4"
-  variants={{
-    visible: { transition: { staggerChildren: 0.03 } }
-  }}
->
-  {/* --- First Row (10 images) --- */}
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center">
-    {profileImages.slice(0, 10).map((image, index) => (
-      <motion.img 
-        key={index}
-        variants={itemVariants}
-        src={image} 
-        alt={`Researcher ${index + 1}`} 
-        className="w-full aspect-square object-cover rounded-md border border-gray-600 shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:border-cyan-400"
-      />
-    ))}
-  </div>
-
-  {/* --- Second Row (remaining images) --- */}
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-center mt-6">
-    {profileImages.slice(10, 15).map((image, index) => (
-      <motion.img 
-        key={index + 10}
-        variants={itemVariants}
-        src={image} 
-        alt={`Researcher ${index + 11}`} 
-        className="w-full aspect-square object-cover rounded-md border border-gray-600 shadow-lg transition-transform duration-300 hover:scale-[1.03] hover:border-cyan-400"
-      />
-    ))}
-  </div>
-</motion.div>
-
-
-                {/* BOTTOM TEXT & BUTTONS */}
-                <motion.p variants={itemVariants} className="text-base sm:text-lg font-extrabold tracking-wider text-white mb-8 mt-4">
-                    CELEBRATING THE SPIRIT OF RESEARCH & DISCOVERY
-                </motion.p>
-
-                <motion.div 
-                    className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-10"
-                    variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-                >
-                    <motion.div variants={itemVariants} className="group">
-                        <Link to="/join" className={buttonClasses}>
-                            <svg className={arrowClasses} viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                            </svg>
-                            <span className="mt-0">JOIN US</span>
-                        </Link>
-                    </motion.div>
-                </motion.div>
+                {/* 2. Visualizer */}
+                <div className="lg:w-2/3 bg-white p-6 rounded-xl shadow-lg border-4 border-dashed flex flex-col items-center justify-center relative"
+                     style={{ 
+                         borderColor: COLOR_ACCENT, 
+                         minHeight: '500px'
+                     }}>
+                    
+                    {image ? (
+                        <>
+                            <div className="absolute inset-0 bg-cover bg-center opacity-30 blur-sm" style={{ backgroundImage: `url(${image})` }}></div>
+                            <div className="relative z-10 p-4 border-4 rounded-xl" style={{ borderColor: clothColor }}>
+                                <img src={image} alt="User Face" className="max-h-80 w-auto rounded-lg shadow-2xl" />
+                                <div 
+                                    className="w-full h-12 mt-4 rounded-lg flex items-center justify-center font-bold text-white text-lg"
+                                    style={{ backgroundColor: clothColor }}
+                                >
+                                    Virtual Garment ({clothColor})
+                                </div>
+                            </div>
+                            <p className="mt-4 text-center text-sm italic">
+                                *In a full application, the garment would be digitally layered over the image here.*
+                            </p>
+                        </>
+                    ) : (
+                        <div className="text-center space-y-4">
+                            <Zap size={64} className="mx-auto" style={{ color: COLOR_ACCENT }} />
+                            <p className="text-xl font-medium" style={{ color: COLOR_PRIMARY }}>
+                                Upload your image to begin the Visual Try-On experience.
+                            </p>
+                            <p className="text-sm text-gray-500">
+                                This feature helps you judge how colors and tones complement your complexion.
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
-        </motion.section>
+        </div>
     );
 };
 
-// --------------------------------------------------------
-// NEW CountingStat Component (for smooth animation)
-// --------------------------------------------------------
+// --- MAIN APPLICATION COMPONENT ---
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('home');
 
-const CountingStat = ({ value, label }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return <HomeContent setPage={setCurrentPage} />;
+      case 'about':
+        return <AboutContent />;
+      case 'cart':
+        return <CartContent />;
+      case 'male':
+        return <ProductList category="Male" />;
+      case 'female':
+        return <ProductList category="Female" />;
+      case 'customized':
+        return <CustomizedContent />;
+      default:
+        return <HomeContent setPage={setCurrentPage} />;
+    }
+  };
 
-    // Extract the numeric part and the suffix (e.g., '+')
-    const numericValueMatch = value.match(/(\d+)/);
-    const numericPart = numericValueMatch ? parseInt(numericValueMatch[1], 10) : 0;
-    const suffix = value.replace(numericPart.toString(), '');
-
-    // Framer Motion hooks for the animation
-    const count = useMotionValue(0);
-    const roundedValue = useSpring(count, { duration: 1.5, type: "spring", stiffness: 100, damping: 20 });
-    
-    // Use useTransform to handle the rounding and formatting safely (FIX for .to is not a function)
-    const displayValue = useTransform(roundedValue, (r) => {
-         // This function runs every frame, safely formatting the number
-         return `${Math.round(r).toLocaleString()}${suffix}`;
-    });
-
-    useEffect(() => {
-        if (isInView && numericPart > 0) {
-            // Start the motion value animation when in view
-            count.set(numericPart);
-        }
-    }, [isInView, count, numericPart]);
-
-    return (
-        <motion.div
-            ref={ref}
-            variants={itemVariants}
-            className="p-6 bg-gray-800/50 backdrop-blur-sm rounded-xl text-center border border-gray-700 hover:border-cyan-500/50 transition-all duration-300 group shadow-lg"
-        >
-            <motion.div
-                className="text-4xl font-extrabold text-cyan-400 group-hover:scale-110 transition-transform duration-300"
-            >
-                {displayValue} 
-            </motion.div>
-            <div className="text-sm text-gray-400 mt-1">{label}</div>
-        </motion.div>
-    );
-};
-
-
-// --------------------------------------------------------
-// UPDATED ABOUT SECTION
-// --------------------------------------------------------
-export const AboutSection = () => (
-    <motion.section 
-        className="py-24 px-6 bg-transparent" 
-        variants={sectionVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+  return (
+    <div 
+      className="min-h-screen font-sans antialiased"
+      style={{ backgroundColor: COLOR_BG, color: COLOR_TEXT }}
     >
-        <div className="max-w-7xl mx-auto">
-            <motion.h2 variants={itemVariants} className="text-4xl font-extrabold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-white">
-                About PhDians
-            </motion.h2>
+      <Header currentPage={currentPage} setPage={setCurrentPage} />
+      <main className="py-8">
+        {renderPage()}
+      </main>
+      <footer 
+        className="p-6 text-center text-sm" 
+        style={{ backgroundColor: COLOR_PRIMARY, color: 'white' }}
+      >
+        © 2024 VERDANT Threads. All rights reserved.
+      </footer>
+    </div>
+  );
+};
 
-            {/* Text Block */}
-            <motion.div 
-                className="space-y-6 text-gray-300 text-lg leading-relaxed max-w-5xl mx-auto"
-                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-            >
-                <motion.p variants={itemVariants}>
-                    PhDians is a global platform dedicated to celebrating the scientific community and promoting research excellence across all disciplines. Our mission is to recognize outstanding contributions, provide a platform for publishing scholarly work, and foster collaboration among researchers worldwide.
-                </motion.p>
-                <motion.p variants={itemVariants}>
-                    Through journals, books, mentorship programs, and international collaborations, PhDians connects scientists, academicians, and innovators, enabling them to share knowledge, exchange ideas, and drive meaningful impact in their fields.
-                </motion.p>
-                <motion.p variants={itemVariants}>
-                    We believe that every discovery — whether by a student, early-career researcher, or seasoned scientist — contributes to building a sustainable and innovative scientific future. PhDians is committed to supporting, honouring, and empowering researchers as they advance knowledge for the betterment of society.
-                </motion.p>
-            </motion.div>
-
-            {/* Key Highlights */}
-            <motion.div 
-                className="mt-16"
-                variants={sectionVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.1 }}
-            >
-                <motion.h3 variants={itemVariants} className="text-2xl md:text-3xl font-bold mb-6 text-cyan-400 text-center">Key Highlights</motion.h3>
-                <motion.ul 
-                    className="space-y-3 text-lg text-gray-300 max-w-3xl mx-auto px-4"
-                    variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-                >
-                    {[
-                        'A platform for global recognition of research contributions.',
-                        'Publication opportunities in high-impact journals, books, and special reports.',
-                        'A network of mentors and collaborators across disciplines and countries.',
-                        'Promoting future-ready science, guiding innovation and research roadmaps worldwide.',
-                    ].map((item, i) => (
-                        <motion.li key={i} variants={itemVariants} className="flex items-start gap-3">
-                            <span className="text-cyan-400 mt-1.5">◆</span>
-                            <span>{item}</span>
-                        </motion.li>
-                    ))}
-                </motion.ul>
-            </motion.div>
-
-            {/* Stats Grid - Using the new CountingStat component */}
-            <motion.div 
-                className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 max-w-7xl mx-auto px-6"
-                variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
-            >
-                {[
-                    { value: '1200+', label: 'Researchers' },
-                    { value: '80+', label: 'Countries' },
-                    { value: '1300+', label: 'Published Articles' },
-                    { value: '100+', label: 'Global Partners' },
-                ].map((stat) => (
-                    <CountingStat
-                        key={stat.label}
-                        value={stat.value}
-                        label={stat.label}
-                    />
-                ))}
-            </motion.div>
-
-            {/* Featured Carousel Component Integration */}
-            <FeaturedScientists />
-            
-        </div>
-    </motion.section>
-);
-
-
-// --------------------------------------------------------
-// MAIN HOME COMPONENT
-// --------------------------------------------------------
-export default function Home() {
-    // Placeholder URL for a dark, abstract background texture
-    const BG_IMAGE_URL = "https://images.unsplash.com/photo-1549491745-f09d29e4b7b2?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-    
-    return (
-        // Global Container with Background Image and Fallback Color
-        <div 
-            className='min-h-screen bg-fixed bg-cover bg-center text-white' 
-            style={{ 
-                backgroundImage: `url(${BG_IMAGE_URL})`,
-                backgroundColor: '#0A0A1F' // Dark blue/black fallback
-            }}
-        >
-            {/* Dark Overlay for Readability (covers the entire content area) */}
-            <div className="bg-black/90 min-h-screen">
-
-                {/* 🚀 HERO SECTION 🚀 */}
-                <ImageHeroSection />
-                <hr className="border-gray-800/70 max-w-7xl mx-auto" />
-
-                {/* --- ABOUT SECTION --- */}
-                <AboutSection />
-                <hr className="border-gray-800/70 max-w-7xl mx-auto" />
-
-                {/* TESTIMONIALS */}
-                <Testimonials />
-            </div>
-        </div>
-    );
-}
+export default App;
